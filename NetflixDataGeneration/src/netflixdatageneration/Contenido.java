@@ -5,27 +5,34 @@
  */
 package netflixdatageneration;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Guillermo
  */
-public abstract class Contenido {
-    public int numContenido;
-    public int tipoSuscripcion;
-    public String[] generos = new String[6];
+public class Contenido {
+    public long producto_ID;
+    public String titulo;
+    public LocalDate fecha_lanzamiento;
+    public int valoracion;
 
-    public Contenido(int numContenido, int tipoSuscripcion) {
-        this.numContenido = numContenido;
-        this.tipoSuscripcion = tipoSuscripcion;
-        this.generos[0] = "";
-        this.generos[1] = "";
-        this.generos[2] = "";
-        this.generos[3] = "";
-        this.generos[4] = "";
-        this.generos[5] = "";
+    public Contenido(long producto_ID, String titulo, LocalDate fecha_lanzamiento, int valoracion) {
+        this.producto_ID = producto_ID;
+        this.titulo = titulo;
+        this.fecha_lanzamiento = fecha_lanzamiento;
+        this.valoracion = valoracion;
     }
-    
-    public void addGenero(String gen, int index){
-        generos[index] = gen;
+
+    @Override
+    public String toString(){
+        String ret = "";
+        ret += producto_ID + ",";
+        ret += titulo + ",";
+        ret += "'" + fecha_lanzamiento.getYear() + "-" + 
+                fecha_lanzamiento.getMonth() + "-" +
+                fecha_lanzamiento.getDayOfMonth() + "',";
+        ret += valoracion + "\n";
+        return ret;
     }
 }

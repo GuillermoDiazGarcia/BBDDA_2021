@@ -5,29 +5,29 @@
  */
 package netflixdatageneration;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Guillermo
  */
-public class Serie extends Contenido{
+public class Serie{
     public int capitulos;
     public int temporadas;
-    public Serie(int numContenido, int tipoSuscripcion, int capitulos, int temporadas) {
-        super(numContenido, tipoSuscripcion);
+    public long producto_ID_contenidos;
+
+    public Serie(int capitulos, int temporadas, long producto_ID_contenidos) {
         this.capitulos = capitulos;
         this.temporadas = temporadas;
+        this.producto_ID_contenidos = producto_ID_contenidos;
     }
+    
     @Override
     public String toString(){
         String ret = "";
-        ret += numContenido + ",";
-        ret += tipoSuscripcion + ",";
-        for(String nav:generos){
-            ret += nav + ",";
-        }
         ret += capitulos + ",";
         ret += temporadas + ",";
+        ret += producto_ID_contenidos + "\n";
         return ret;
     }
-    
 }

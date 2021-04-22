@@ -9,22 +9,20 @@ package netflixdatageneration;
  *
  * @author Guillermo
  */
-public class Pelicula extends Contenido{
+public class Pelicula{
     public int duracion;
+    public long producto_ID_contenidos;
 
-    public Pelicula(int numContenido, int tipoSuscripcion, int duracion) {
-        super(numContenido, tipoSuscripcion);
+    public Pelicula(int duracion, long producto_ID_contenidos) {
         this.duracion = duracion;
+        this.producto_ID_contenidos = producto_ID_contenidos;
     }
+    
     @Override
     public String toString(){
         String ret = "";
-        ret += numContenido + ",";
-        ret += tipoSuscripcion + ",";
-        for(String nav:generos){
-            ret += nav + ",";
-        }
         ret += duracion + ",";
+        ret += producto_ID_contenidos + "\n";
         return ret;
     }
 }

@@ -8,6 +8,7 @@ package netflixdatageneration;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Random;
 
 /**
@@ -37,17 +38,12 @@ public class NetflixDataGeneration {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        inicializarDatos();
-        rellenarUsuarios();
-        System.out.println("Finish usuarios + pagos");
+        //rellenarUsuarios();
+        //System.out.println("Finish usuarios + pagos");
         rellenarContenidos();
         System.out.println("Finish");
     }
-    private static void inicializarDatos(){
-        tiposContenido[0] = "Película";
-        tiposContenido[1] = "Serie";
-    }
-    private static void rellenarUsuarios() throws IOException {
+    /*private static void rellenarUsuarios() throws IOException {
         long contadorVueltas;
         int tipoSuscripcion;
         long numPago = 0;
@@ -66,13 +62,29 @@ public class NetflixDataGeneration {
             }
             if(contadorVueltas%10000 == 0) System.out.println("usuario "+contadorVueltas);
         }
-    }
-    private static void rellenarContenidos(){
-        long contadorContenido;
-        for(contadorContenido=0;contadorContenido<numContenidos;contadorContenido++){
-            String tipoCont = tiposContenido[rand.nextInt(1)];
-            int tipoSus = rand.nextInt(numTiposSuscripcion)+1;
-            if(contadorContenido%10000 == 0) System.out.println("contenido "+contadorContenido);
+    }*/
+    private static void rellenarContenidos() throws IOException{
+        long contador;
+        FileWriter fwContenidos = new FileWriter("../datos_Netflix/contenidos.txt",true);
+        BufferedWriter bwContenidos = new BufferedWriter(fwContenidos);
+        FileWriter fwPeliculas = new FileWriter("../datos_Netflix/peliculas.txt",true);
+        BufferedWriter bwPeliculas = new BufferedWriter(fwPeliculas);
+        FileWriter fwSeries = new FileWriter("../datos_Netflix/series.txt",true);
+        BufferedWriter bwSeries = new BufferedWriter(fwSeries);
+        for(contador=0;contador<numContenidos;contador++){
+            bwContenidos.write(new Contenido(contador,"titulo"+contador,
+                    LocalDate.of(1950+rand.nextInt(70), 1+rand.nextInt(11),
+                    1+rand.nextInt(27)),1+rand.nextInt(9)).toString());
+            switch(rand.nextInt(1)){
+                case 0:         //Peliculas
+                    bwPeliculas.write(new Pelicula(80+rand.nextInt(40),contador).toString());
+                case 1:         //Series
+                    bwSeries.write(new Serie(10+rand.nextInt(20),1+rand.nextInt(14),contador).toString());
+            }
+            if(contador%10000 == 0) System.out.println("contenido "+contador);
         }
+        bwContenidos.close();
+        bwPeliculas.close();
+        bwSeries.close();
     }
 }
