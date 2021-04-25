@@ -58,7 +58,7 @@ public class NetflixDataGeneration {
         int[] generosContenido;
         boolean checker;
         FileWriter fwContenidos = new FileWriter("../datos_Netflix/contenidos.txt",true);
-        BufferedWriter bwContenidos = new BufferedWriter(fwContenidos);
+        BufferedWriter bwContenidos = new BufferedWriter(fwContenidos);                                 //BW para contenidos.txt
         FileWriter fwGeneroContenidos = new FileWriter("../datos_Netflix/genero_contenidos.txt",true);
         BufferedWriter bwGeneroContenidos = new BufferedWriter(fwGeneroContenidos);
         FileWriter fwPeliculas = new FileWriter("../datos_Netflix/peliculas.txt",true);
