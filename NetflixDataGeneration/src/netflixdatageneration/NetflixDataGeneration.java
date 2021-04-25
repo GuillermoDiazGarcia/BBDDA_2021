@@ -38,35 +38,13 @@ public class NetflixDataGeneration {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        //rellenarUsuarios();
-        //System.out.println("Finish usuarios + pagos");
         rellenarGeneros();
         System.out.println("End Generos, start Contenidos");
         rellenarContenidos();
         System.out.println("Finish");
     }
-    /*private static void rellenarUsuarios() throws IOException {
-        long contadorVueltas;
-        int tipoSuscripcion;
-        long numPago = 0;
-        for(contadorVueltas=0;contadorVueltas<numUsuarios;contadorVueltas++){
-            tipoSuscripcion = rand.nextInt(numTiposSuscripcion)+1;
-            FileWriter fwUsuarios = new FileWriter("../datos_Netflix/usuarios.txt",true);
-            BufferedWriter bwUsuarios = new BufferedWriter(fwUsuarios);
-            bwUsuarios.write((new Usuario(contadorVueltas, tipoSuscripcion)).toString());
-            bwUsuarios.close();
-            for(int i=0;i<numPagos;i++){
-                FileWriter fwPagos = new FileWriter("../datos_Netflix/pagos.txt",true);
-                BufferedWriter bwPagos = new BufferedWriter(fwPagos);
-                bwPagos.write((new Pago(numPago,contadorVueltas,i+1,(rand.nextInt(maxDias))+1)).toString());
-                bwPagos.close();
-                numPago++;
-            }
-            if(contadorVueltas%10000 == 0) System.out.println("usuario "+contadorVueltas);
-        }
-    }*/
     private static void rellenarGeneros() throws IOException{
-        long contador;
+        int contador;
         FileWriter fwGeneros = new FileWriter("../datos_Netflix/generos.txt",true);
         BufferedWriter bwGeneros = new BufferedWriter(fwGeneros);
         for(contador=0;contador<numGeneros;contador++){
@@ -76,7 +54,9 @@ public class NetflixDataGeneration {
     }
     private static void rellenarContenidos() throws IOException{
         long contador;
-        int num_generos;
+        int num_generos, nuevoGenero;
+        int[] generosContenido;
+        boolean checker;
         FileWriter fwContenidos = new FileWriter("../datos_Netflix/contenidos.txt",true);
         BufferedWriter bwContenidos = new BufferedWriter(fwContenidos);
         FileWriter fwGeneroContenidos = new FileWriter("../datos_Netflix/genero_contenidos.txt",true);
@@ -90,8 +70,15 @@ public class NetflixDataGeneration {
                     LocalDate.of(1950+rand.nextInt(70), 1+rand.nextInt(11),
                     1+rand.nextInt(27)),1+rand.nextInt(9)).toString());
             num_generos = 1 + rand.nextInt(5);
-            for(int i=0;i<num_generos;i++){
-                bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(19),contador).toString());
+            generosContenido = new int[num_generos];
+            for(int i=0;i<num_generos;i++){         //Comprueba que el género no esté repetido para ese contenido
+                nuevoGenero = rand.nextInt(19);
+                checker = false;
+                for(int j=0;j<=i;j++){
+                    if(generosContenido[j]==nuevoGenero) checker = true;
+                }
+                if(!checker) bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(19),contador).toString());
+                else i--;                           //Si ese género ya estaba añadido para ese contenido no se añade y se repite el proceso
             }
             switch(rand.nextInt(1)){
                 case 0:         //Peliculas

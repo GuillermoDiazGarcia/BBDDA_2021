@@ -10,10 +10,10 @@ package netflixdatageneration;
  * @author Guillermo
  */
 public class Genero {
-    public long genero_ID;
+    public int genero_ID;
     public String descripcion;
 
-    public Genero(long genero_ID, String descripcion) {
+    public Genero(int genero_ID, String descripcion) {
         this.genero_ID = genero_ID;
         this.descripcion = descripcion;
     }
