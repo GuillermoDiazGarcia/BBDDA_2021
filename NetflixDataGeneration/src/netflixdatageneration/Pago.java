@@ -38,7 +38,7 @@ public class Pago {
                 fecha.getDayOfMonth() + "',";
         ret += cantidad + ",";
         ret += ID_cuenta_usuario + ",";
-        ret += suscripcion_ID_suscripcion + ",";
+        ret += suscripcion_ID_suscripcion + "\n";
         return ret;
     }
 }

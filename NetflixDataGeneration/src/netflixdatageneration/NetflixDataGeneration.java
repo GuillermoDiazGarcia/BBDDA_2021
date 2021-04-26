@@ -63,20 +63,34 @@ public class NetflixDataGeneration {
         float cantidad;
         FileWriter fwUsuarios = new FileWriter("../datos_Netflix/cuentas_usuario.txt",true);
         BufferedWriter bwUsuarios = new BufferedWriter(fwUsuarios);
-        FileWriter fwPagos = new FileWriter("../datos_Netflix/pagos.txt",true);
-        BufferedWriter bwPagos = new BufferedWriter(fwPagos);
-        for(contador=0;contador<=numUsuarios;contador++){
+        FileWriter fwPagos1 = new FileWriter("../datos_Netflix/pagos1.txt",true);
+        BufferedWriter bwPagos1 = new BufferedWriter(fwPagos1);
+        FileWriter fwPagos2 = new FileWriter("../datos_Netflix/pagos2.txt",true);
+        BufferedWriter bwPagos2 = new BufferedWriter(fwPagos2);
+        for(contador=0;contador<1000000;contador++){
             int tipo = 1 + rand.nextInt(100);
             bwUsuarios.write(new Cuenta_usuario(contador,"nombre"+contador,"direccion"+contador,
                         "e-mail"+contador,rand.nextInt(100000000)+600000000,tipo).toString());
             for(int i=1;i<=12;i++){
-                bwPagos.write(new Pago((contador*12)+i,"metodo"+contador,LocalDate.of(2020,i,1+rand.nextInt(28)),
+                bwPagos1.write(new Pago((contador*12)+i,"metodo"+contador,LocalDate.of(2020,i,1+rand.nextInt(28)),
+                            tiposSuscripcion.get(tipo),contador,tipo).toString());
+            }
+            if(contador%10000 == 0) System.out.println("usuario "+contador);
+        }
+        System.out.println("Cambio de archivo de pagos");
+        for(contador=contador;contador<numUsuarios;contador++){
+            int tipo = 1 + rand.nextInt(100);
+            bwUsuarios.write(new Cuenta_usuario(contador,"nombre"+contador,"direccion"+contador,
+                        "e-mail"+contador,rand.nextInt(100000000)+600000000,tipo).toString());
+            for(int i=1;i<=12;i++){
+                bwPagos2.write(new Pago((contador*12)+i,"metodo"+contador,LocalDate.of(2020,i,1+rand.nextInt(28)),
                             tiposSuscripcion.get(tipo),contador,tipo).toString());
             }
             if(contador%10000 == 0) System.out.println("usuario "+contador);
         }
         bwUsuarios.close();
-        bwPagos.close();
+        bwPagos1.close();
+        bwPagos2.close();
     }
     private static void rellenarContenidos() throws IOException{
         long contador;
