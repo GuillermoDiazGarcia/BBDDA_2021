@@ -44,7 +44,7 @@ public class NetflixDataGeneration {
             float precio = rand.nextInt(20) + ((float)(rand.nextInt(100))/100);
             tiposSuscripcion.put(i, precio);
             bwSuscripciones.write(new Suscripcion(i,precio,
-                    LocalDate.of(2000+rand.nextInt(19),1+rand.nextInt(13),1+rand.nextInt(28)),
+                    LocalDate.of(2000+rand.nextInt(19),1+rand.nextInt(12),1+rand.nextInt(27)),
                     i).toString());
         }
         bwSuscripciones.close();
@@ -73,6 +73,7 @@ public class NetflixDataGeneration {
                 bwPagos.write(new Pago((contador*12)+i,"metodo"+contador,LocalDate.of(2020,i,1+rand.nextInt(28)),
                             tiposSuscripcion.get(tipo),contador,tipo).toString());
             }
+            if(contador%10000 == 0) System.out.println("usuario "+contador);
         }
         bwUsuarios.close();
         bwPagos.close();
