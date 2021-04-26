@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -16,32 +17,37 @@ import java.util.Random;
  * @author Guillermo
  */
 public class NetflixDataGeneration {
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
+    private static final HashMap<Integer,Float> tiposSuscripcion = new HashMap<>();
     private static final long numUsuarios = 2000000;
     private static final int numTiposSuscripcion = 100;
-    private static final int numPagos = 12;
-    private static final int maxDias = 28;
     private static final long numContenidos = 20000000;
-    private static String[] tiposContenido = new String[2];
     private static final int numGeneros = 20;
     private static final int maxGenerosPorContenido = 6;
-    private static final int minGenerosPorContenido = 1;
-    private static final int maxDurPeliculas = 120;
-    private static final int minDurPeliculas = 80;
-    private static final int maxCapitulos = 20;
-    private static final int minCapitulos = 10;
-    private static final int maxTemporadas = 15;
-    private static final int minTemporadas = 1;
-    private static final int maxValoracion = 10;
-    private static final int minValoracion = 1;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        rellenarTiposSuscripcion();
+        System.out.println("End Suscripciones, start Usuarios");
+        rellenarUsuarios();
+        System.out.println("End Usuarios, start Generos");
         rellenarGeneros();
         System.out.println("End Generos, start Contenidos");
         rellenarContenidos();
         System.out.println("Finish");
+    }
+    private static void rellenarTiposSuscripcion() throws IOException{
+        FileWriter fwSuscripciones = new FileWriter("../datos_Netflix/suscripciones.txt",true);
+        BufferedWriter bwSuscripciones = new BufferedWriter(fwSuscripciones);
+        for(int i=1;i<=numTiposSuscripcion;i++){
+            float precio = rand.nextInt(20) + ((float)(rand.nextInt(100))/100);
+            tiposSuscripcion.put(i, precio);
+            bwSuscripciones.write(new Suscripcion(i,precio,
+                    LocalDate.of(2000+rand.nextInt(19),1+rand.nextInt(13),1+rand.nextInt(28)),
+                    i).toString());
+        }
+        bwSuscripciones.close();
     }
     private static void rellenarGeneros() throws IOException{
         int contador;
@@ -51,6 +57,25 @@ public class NetflixDataGeneration {
             bwGeneros.write(new Genero(contador,"genero"+contador).toString());
         }
         bwGeneros.close();
+    }
+    private static void rellenarUsuarios() throws IOException{
+        long contador;
+        float cantidad;
+        FileWriter fwUsuarios = new FileWriter("../datos_Netflix/cuentas_usuario.txt",true);
+        BufferedWriter bwUsuarios = new BufferedWriter(fwUsuarios);
+        FileWriter fwPagos = new FileWriter("../datos_Netflix/pagos.txt",true);
+        BufferedWriter bwPagos = new BufferedWriter(fwPagos);
+        for(contador=0;contador<=numUsuarios;contador++){
+            int tipo = 1 + rand.nextInt(100);
+            bwUsuarios.write(new Cuenta_usuario(contador,"nombre"+contador,"direccion"+contador,
+                        "e-mail"+contador,rand.nextInt(100000000)+600000000,tipo).toString());
+            for(int i=1;i<=12;i++){
+                bwPagos.write(new Pago((contador*12)+i,"metodo"+contador,LocalDate.of(2020,i,1+rand.nextInt(28)),
+                            tiposSuscripcion.get(tipo),contador,tipo).toString());
+            }
+        }
+        bwUsuarios.close();
+        bwPagos.close();
     }
     private static void rellenarContenidos() throws IOException{
         long contador;
@@ -65,26 +90,30 @@ public class NetflixDataGeneration {
         BufferedWriter bwPeliculas = new BufferedWriter(fwPeliculas);
         FileWriter fwSeries = new FileWriter("../datos_Netflix/series.txt",true);
         BufferedWriter bwSeries = new BufferedWriter(fwSeries);
+        FileWriter fwSuscripcionContenidos = new FileWriter("../datos_Netflix/suscripcion_contenidos.txt",true);
+        BufferedWriter bwSuscripcionContenidos = new BufferedWriter(fwSuscripcionContenidos);
         for(contador=0;contador<numContenidos;contador++){
             bwContenidos.write(new Contenido(contador,"titulo"+contador,
-                    LocalDate.of(1950+rand.nextInt(70), 1+rand.nextInt(11),
-                    1+rand.nextInt(27)),1+rand.nextInt(9)).toString());
-            num_generos = 1 + rand.nextInt(5);
+                    LocalDate.of(1950+rand.nextInt(71), 1+rand.nextInt(12),
+                    1+rand.nextInt(28)),1+rand.nextInt(10)).toString());
+            num_generos = 1 + rand.nextInt(maxGenerosPorContenido);
             generosContenido = new int[num_generos];
             for(int i=0;i<num_generos;i++){         //Comprueba que el género no esté repetido para ese contenido
-                nuevoGenero = rand.nextInt(19);
+                nuevoGenero = rand.nextInt(20);
                 checker = false;
                 for(int j=0;j<=i;j++){
                     if(generosContenido[j]==nuevoGenero) checker = true;
                 }
-                if(!checker) bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(19),contador).toString());
+                if(!checker) bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(20),contador).toString());
                 else i--;                           //Si ese género ya estaba añadido para ese contenido no se añade y se repite el proceso
             }
-            switch(rand.nextInt(1)){
+            bwSuscripcionContenidos.write(new Suscripcion_Contenidos(LocalDate.of(2020,1,1),
+                    1+rand.nextInt(100),contador).toString());
+            switch(rand.nextInt(2)){
                 case 0:         //Peliculas
-                    bwPeliculas.write(new Pelicula(80+rand.nextInt(40),contador).toString());
+                    bwPeliculas.write(new Pelicula(80+rand.nextInt(41),contador).toString());
                 case 1:         //Series
-                    bwSeries.write(new Serie(10+rand.nextInt(20),1+rand.nextInt(14),contador).toString());
+                    bwSeries.write(new Serie(10+rand.nextInt(21),1+rand.nextInt(15),contador).toString());
             }
             if(contador%10000 == 0) System.out.println("contenido "+contador);
         }
@@ -92,5 +121,6 @@ public class NetflixDataGeneration {
         bwGeneroContenidos.close();
         bwPeliculas.close();
         bwSeries.close();
+        bwSuscripcionContenidos.close();
     }
 }
