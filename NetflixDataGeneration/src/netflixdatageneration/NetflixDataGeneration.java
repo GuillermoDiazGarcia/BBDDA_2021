@@ -119,7 +119,10 @@ public class NetflixDataGeneration {
                 for(int j=0;j<=i;j++){
                     if(generosContenido[j]==nuevoGenero) checker = true;
                 }
-                if(!checker) bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(20),contador).toString());
+                if(!checker){
+                    generosContenido[i] = nuevoGenero;
+                    bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(20),contador).toString());
+                }
                 else i--;                           //Si ese género ya estaba añadido para ese contenido no se añade y se repite el proceso
             }
             bwSuscripcionContenidos.write(new Suscripcion_Contenidos(LocalDate.of(2020,1,1),
