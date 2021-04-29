@@ -38,7 +38,7 @@ public class NetflixDataGeneration {
         System.out.println("Finish");
     }
     private static void rellenarTiposSuscripcion() throws IOException{
-        FileWriter fwSuscripciones = new FileWriter("../datos_Netflix/suscripciones.txt",true);
+        FileWriter fwSuscripciones = new FileWriter("D:/suscripciones.txt",true);
         BufferedWriter bwSuscripciones = new BufferedWriter(fwSuscripciones);
         for(int i=1;i<=numTiposSuscripcion;i++){
             float precio = rand.nextInt(20) + ((float)(rand.nextInt(100))/100);
@@ -51,7 +51,7 @@ public class NetflixDataGeneration {
     }
     private static void rellenarGeneros() throws IOException{
         int contador;
-        FileWriter fwGeneros = new FileWriter("../datos_Netflix/generos.txt",true);
+        FileWriter fwGeneros = new FileWriter("D:/generos.txt",true);
         BufferedWriter bwGeneros = new BufferedWriter(fwGeneros);
         for(contador=0;contador<numGeneros;contador++){
             bwGeneros.write(new Genero(contador,"genero"+contador).toString());
@@ -61,11 +61,11 @@ public class NetflixDataGeneration {
     private static void rellenarUsuarios() throws IOException{
         long contador;
         float cantidad;
-        FileWriter fwUsuarios = new FileWriter("../datos_Netflix/cuentas_usuario.txt",true);
+        FileWriter fwUsuarios = new FileWriter("D:/cuentas_usuario.txt",true);
         BufferedWriter bwUsuarios = new BufferedWriter(fwUsuarios);
-        FileWriter fwPagos1 = new FileWriter("../datos_Netflix/pagos1.txt",true);
+        FileWriter fwPagos1 = new FileWriter("D:/pagos1.txt",true);
         BufferedWriter bwPagos1 = new BufferedWriter(fwPagos1);
-        FileWriter fwPagos2 = new FileWriter("../datos_Netflix/pagos2.txt",true);
+        FileWriter fwPagos2 = new FileWriter("D:/pagos2.txt",true);
         BufferedWriter bwPagos2 = new BufferedWriter(fwPagos2);
         for(contador=0;contador<1000000;contador++){
             int tipo = 1 + rand.nextInt(100);
@@ -97,15 +97,15 @@ public class NetflixDataGeneration {
         int num_generos, nuevoGenero;
         int[] generosContenido;
         boolean checker;
-        FileWriter fwContenidos = new FileWriter("../datos_Netflix/contenidos.txt",true);
+        FileWriter fwContenidos = new FileWriter("D:/contenidos.txt",true);
         BufferedWriter bwContenidos = new BufferedWriter(fwContenidos);                                 //BW para contenidos.txt
-        FileWriter fwGeneroContenidos = new FileWriter("../datos_Netflix/genero_contenidos.txt",true);
+        FileWriter fwGeneroContenidos = new FileWriter("D:/genero_contenidos.txt",true);
         BufferedWriter bwGeneroContenidos = new BufferedWriter(fwGeneroContenidos);
-        FileWriter fwPeliculas = new FileWriter("../datos_Netflix/peliculas.txt",true);
+        FileWriter fwPeliculas = new FileWriter("D:/peliculas.txt",true);
         BufferedWriter bwPeliculas = new BufferedWriter(fwPeliculas);
-        FileWriter fwSeries = new FileWriter("../datos_Netflix/series.txt",true);
+        FileWriter fwSeries = new FileWriter("D:/series.txt",true);
         BufferedWriter bwSeries = new BufferedWriter(fwSeries);
-        FileWriter fwSuscripcionContenidos = new FileWriter("../datos_Netflix/suscripcion_contenidos.txt",true);
+        FileWriter fwSuscripcionContenidos = new FileWriter("D:/suscripcion_contenidos.txt",true);
         BufferedWriter bwSuscripcionContenidos = new BufferedWriter(fwSuscripcionContenidos);
         for(contador=0;contador<numContenidos;contador++){
             bwContenidos.write(new Contenido(contador,"titulo"+contador,
@@ -121,7 +121,7 @@ public class NetflixDataGeneration {
                 }
                 if(!checker){
                     generosContenido[i] = nuevoGenero;
-                    bwGeneroContenidos.write(new Genero_Contenidos(rand.nextInt(20),contador).toString());
+                    bwGeneroContenidos.write(new Genero_Contenidos(nuevoGenero,contador).toString());
                 }
                 else i--;                           //Si ese género ya estaba añadido para ese contenido no se añade y se repite el proceso
             }
