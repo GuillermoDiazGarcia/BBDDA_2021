@@ -127,11 +127,14 @@ public class NetflixDataGeneration {
             }
             bwSuscripcionContenidos.write(new Suscripcion_Contenidos(LocalDate.of(2020,1,1),
                     1+rand.nextInt(100),contador).toString());
-            switch(rand.nextInt(2)){
+            int switcher = rand.nextInt(2);
+            switch(switcher){
                 case 0:         //Peliculas
                     bwPeliculas.write(new Pelicula(80+rand.nextInt(41),contador).toString());
+                    break;
                 case 1:         //Series
                     bwSeries.write(new Serie(10+rand.nextInt(21),1+rand.nextInt(15),contador).toString());
+                    break;
             }
             if(contador%10000 == 0) System.out.println("contenido "+contador);
         }
